@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>canvas时钟</title>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"> -->
 </head>
 <style type="text/css">
     html, body {
@@ -10,8 +12,8 @@
     }
 </style>
 <body>
-    <div style="width: 400px;margin: 50px auto">
-        <canvas id="clock" width="400" height="400"></canvas>
+    <div style="width: 300px;margin: 50px auto;" id="canvas-div">
+        <canvas id="clock" width="300" height="300"></canvas>
     </div>
 </body>
 
@@ -19,6 +21,30 @@
     var canvas = document.getElementById('clock');
     var ctx = canvas.getContext('2d');
 
+    // 设置手机兼容
+    var devicePixelRatio = window.devicePixelRatio || 1;
+    var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                            ctx.mozBackingStorePixelRatio ||
+                            ctx.msBackingStorePixelRatio ||
+                            ctx.oBackingStorePixelRatio ||
+                            ctx.backingStorePixelRatio || 1;
+    var ratio = devicePixelRatio / backingStoreRatio;
+    canvas.width = canvas.width * ratio;
+    canvas.height = canvas.height* ratio;
+    ctx.scale(ratio, ratio);
+
+    window.onload = function() {
+        var head = document.getElementsByTagName('head');
+        var viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        viewport.content = 'width=device-width,initial-scale=' +  1 / ratio + ',maximum-scale=' +  1 / ratio + ',user-scalable=no';
+        head.length > 0 && head[head.length - 1].appendChild(viewport);
+
+        var canvasDiv = document.getElementById('canvas-div');
+        canvasDivWidth = canvasDiv.style.width;
+        canvasDiv.style.width = parseInt(canvasDivWidth.substr(0, canvasDivWidth.length - 2)) * ratio + 'px';
+    }
+    
     var circle = {x: 150, y: 150}; // 圆心
     var r = 100; // 半径
     ctx.strokeStyle = '#fff';
@@ -102,10 +128,10 @@
 
         // 绘制分钟
         var minutes = dateTime.minute;
-        minutesRads = (2 * Math.PI / 60) * (minutes - 15) + ((2 * Math.PI) / 3600) * (seconds - 15);
+        minutesRads = (2 * Math.PI / 60) * (minutes - 15) + ((2 * Math.PI) / 3600) * (seconds);
 
-        var minuteX = circle.x + Math.cos(minutesRads) * r * .8;
-        var minuteY = circle.y + Math.sin(minutesRads) * r * .8;
+        var minuteX = circle.x + Math.cos(minutesRads) * r ;
+        var minuteY = circle.y + Math.sin(minutesRads) * r ;
         var minuteX1 = circle.x - Math.cos(minutesRads) * r * .1;
         var minuteY1 = circle.y - Math.sin(minutesRads) * r * .1;
 
@@ -121,10 +147,12 @@
 
         // 绘制小时
         var hours = dateTime.hour;
-        hoursRads = (2 * Math.PI / 60) * (hours * 5 - 15) + (2 * Math.PI / 3600) * (minutes - 15) + (2 * Math.PI / (3600 * 60)) * (seconds - 15);
+        hoursRads = ((2 * Math.PI) / 12) * (hours - 3) 
+                    + ((2 * Math.PI) / (60 * 12)) * minutes 
+                    + ((2 * Math.PI) / (3600 * 12)) * seconds;
 
-        var hourX = circle.x + Math.cos(hoursRads) * r * .6;
-        var hourY = circle.y + Math.sin(hoursRads) * r * .6;
+        var hourX = circle.x + Math.cos(hoursRads) * r * 1;
+        var hourY = circle.y + Math.sin(hoursRads) * r * 1;
         var hourX1 = circle.x - Math.cos(hoursRads) * r * .05;
         var hourY1 = circle.y - Math.sin(hoursRads) * r * .05;
 
