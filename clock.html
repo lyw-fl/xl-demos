@@ -130,8 +130,8 @@
         var minutes = dateTime.minute;
         minutesRads = (2 * Math.PI / 60) * (minutes - 15) + ((2 * Math.PI) / 3600) * (seconds);
 
-        var minuteX = circle.x + Math.cos(minutesRads) * r ;
-        var minuteY = circle.y + Math.sin(minutesRads) * r ;
+        var minuteX = circle.x + Math.cos(minutesRads) * r * .8;
+        var minuteY = circle.y + Math.sin(minutesRads) * r * .8;
         var minuteX1 = circle.x - Math.cos(minutesRads) * r * .1;
         var minuteY1 = circle.y - Math.sin(minutesRads) * r * .1;
 
@@ -151,8 +151,8 @@
                     + ((2 * Math.PI) / (60 * 12)) * minutes 
                     + ((2 * Math.PI) / (3600 * 12)) * seconds;
 
-        var hourX = circle.x + Math.cos(hoursRads) * r * 1;
-        var hourY = circle.y + Math.sin(hoursRads) * r * 1;
+        var hourX = circle.x + Math.cos(hoursRads) * r * .65;
+        var hourY = circle.y + Math.sin(hoursRads) * r * .65;
         var hourX1 = circle.x - Math.cos(hoursRads) * r * .05;
         var hourY1 = circle.y - Math.sin(hoursRads) * r * .05;
 
